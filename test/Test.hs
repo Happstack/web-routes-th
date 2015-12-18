@@ -2,10 +2,8 @@
 
 module Main (main) where
 
-import Test.Framework
-import Test.Framework.Providers.HUnit
-import Test.Framework.Providers.QuickCheck2
-import Test.Framework.TH
+import Test.Hspec
+import Test.Hspec.QuickCheck
 import Test.HUnit
 import Test.QuickCheck
 import Web.Routes
@@ -40,4 +38,7 @@ case_fromPathInfo =
          url    -> assertFailure $ "expected a Left, but got: " ++ show url
 
 main :: IO ()
-main = $defaultMainGenerator
+main = hspec $ do
+ prop "toPathInfo" case_toPathInfo
+ prop "fromPathInfo" case_fromPathInfo
+ prop "PathInfo_isomorphism"  prop_PathInfo_isomorphism

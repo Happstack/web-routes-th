@@ -1,22 +1,30 @@
-with (import <nixpkgs> {}).pkgs;
-let pkg = haskellngPackages.callPackage
-            ({ mkDerivation, base, HUnit, parsec, QuickCheck, split, stdenv
-             , template-haskell, test-framework, test-framework-hunit
-             , test-framework-quickcheck2, test-framework-th, text, web-routes
-             }:
-             mkDerivation {
-               pname = "web-routes-th";
-               version = "0.22.2";
-               src = ./.;
-               buildDepends = [
-                 base parsec split template-haskell text web-routes
-               ];
-               testDepends = [
-                 base HUnit QuickCheck test-framework test-framework-hunit
-                 test-framework-quickcheck2 test-framework-th web-routes
-               ];
-               description = "Support for deriving PathInfo using Template Haskell";
-               license = stdenv.lib.licenses.bsd3;
-             }) {};
+{ nixpkgs ? import <nixpkgs> {}, compiler ? "default" }:
+
+let
+
+  inherit (nixpkgs) pkgs;
+
+  f = { mkDerivation, base, hspec, HUnit, parsec, QuickCheck, split
+      , stdenv, template-haskell, text, web-routes
+      }:
+      mkDerivation {
+        pname = "web-routes-th";
+        version = "0.22.4";
+        src = ./.;
+        libraryHaskellDepends = [
+          base parsec split template-haskell text web-routes
+        ];
+        testHaskellDepends = [ base hspec HUnit QuickCheck web-routes ];
+        description = "Support for deriving PathInfo using Template Haskell";
+        license = stdenv.lib.licenses.bsd3;
+      };
+
+  haskellPackages = if compiler == "default"
+                       then pkgs.haskellPackages
+                       else pkgs.haskell.packages.${compiler};
+
+  drv = haskellPackages.callPackage f {};
+
 in
-  pkg.env
+
+  if pkgs.lib.inNixShell then drv.env else drv

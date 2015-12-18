@@ -1,5 +1,5 @@
 Name:             web-routes-th
-Version:          0.22.3
+Version:          0.22.4
 License:          BSD3
 License-File:     LICENSE
 Author:           jeremy@seereason.com
@@ -7,20 +7,21 @@ Maintainer:       partners@seereason.com
 Bug-Reports:      http://bugzilla.seereason.com/
 Category:         Web, Language
 Synopsis:         Support for deriving PathInfo using Template Haskell
+Description:      web-routes is a portable library for type-safe URLs. This module adds
+                  support for creating the URL parsers/printers automatically using
+                  Template Haskell.
 Cabal-Version:    >= 1.8
 Build-type:       Simple
+tested-with:      GHC == 7.6.3, GHC == 7.8.4, GHC == 7.10.3
 
 test-suite Test
   type             : exitcode-stdio-1.0
   main-is          : Test.hs
   hs-source-dirs   : test
   build-depends    : base == 4.*,
+                     hspec == 2.2.*,
                      HUnit,
                      QuickCheck,
-                     test-framework,
-                     test-framework-hunit,
-                     test-framework-quickcheck2,
-                     test-framework-th,
                      web-routes,
                      web-routes-th
 
@@ -35,5 +36,4 @@ Library
 
 source-repository head
     type:     git
-    location: https://github.com/Happstack/web-routes.git
-    subdir:   web-routes-th
+    location: https://github.com/Happstack/web-routes-th.git
