@@ -5,7 +5,7 @@ let
   inherit (nixpkgs) pkgs;
 
   f = { mkDerivation, base, hspec, HUnit, parsec, QuickCheck, split
-      , stdenv, template-haskell, text, web-routes
+      , stdenv, template-haskell, text, web-routes, cabal-install
       }:
       mkDerivation {
         pname = "web-routes-th";
@@ -14,6 +14,7 @@ let
         libraryHaskellDepends = [
           base parsec split template-haskell text web-routes
         ];
+        buildTools = [ cabal-install ];
         testHaskellDepends = [ base hspec HUnit QuickCheck web-routes ];
         description = "Support for deriving PathInfo using Template Haskell";
         license = stdenv.lib.licenses.bsd3;

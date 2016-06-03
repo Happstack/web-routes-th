@@ -92,8 +92,13 @@ parseInfo :: Name -> Q Class
 parseInfo name
     = do info <- reify name
          case info of
+#if MIN_VERSION_template_haskell(2,11,0)
+           TyConI (DataD cx _ keys _ cs _)    -> return $ Tagged (map conInfo cs) cx $ map conv keys
+           TyConI (NewtypeD cx _ keys _ con _)-> return $ Tagged [conInfo con] cx $ map conv keys
+#else
            TyConI (DataD cx _ keys cs _)    -> return $ Tagged (map conInfo cs) cx $ map conv keys
            TyConI (NewtypeD cx _ keys con _)-> return $ Tagged [conInfo con] cx $ map conv keys
+#endif
            _                                ->  error $ "derivePathInfo - invalid input: " ++ pprint info
     where conInfo (NormalC n args) = (n, length args)
           conInfo (RecC n args) = (n, length args)
@@ -138,7 +143,11 @@ parseMethods :: Name -> Q [Name]
 parseMethods con =
     do info <- reify con
        case info of
+#if MIN_VERSION_template_haskell(2,11,0)
+         (DataConI _ ty _) ->
+#else
          (DataConI _ ty _ _) ->
+#endif
              do runIO $ print ty
                 runIO $ print $ lastTerm ty
                 return $ extractMethods (lastTerm ty)
