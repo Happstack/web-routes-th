@@ -1,5 +1,5 @@
 Name:             web-routes-th
-Version:          0.22.6
+Version:          0.22.6.1
 License:          BSD3
 License-File:     LICENSE
 Author:           jeremy@seereason.com
@@ -23,7 +23,7 @@ test-suite Test
   main-is          : Test.hs
   hs-source-dirs   : test
   build-depends    : base == 4.*,
-                     hspec >= 2.2 && < 2.4,
+                     hspec >= 2.2 && < 2.5,
                      HUnit,
                      QuickCheck,
                      web-routes,
