@@ -23,7 +23,7 @@ test-suite Test
   main-is          : Test.hs
   hs-source-dirs   : test
   build-depends    : base == 4.*,
-                     hspec >= 2.2 && < 2.7,
+                     hspec >= 2.2 && < 2.8,
                      HUnit,
                      QuickCheck,
                      web-routes,
