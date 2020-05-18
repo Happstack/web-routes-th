@@ -10,7 +10,7 @@ Synopsis:         Support for deriving PathInfo using Template Haskell
 Description:      web-routes is a portable library for type-safe URLs. This module adds
                   support for creating the URL parsers/printers automatically using
                   Template Haskell.
-Cabal-Version:    >= 1.8
+Cabal-Version:    >= 1.10
 Build-type:       Simple
 tested-with:      GHC == 7.6.3, GHC == 7.8.4, GHC == 7.10.3, GHC == 8.0.1, GHC == 8.2.2, GHC == 8.4.1, GHC == 8.6.3, GHC == 8.8.3, GHC == 8.10.1
 
@@ -19,6 +19,7 @@ source-repository head
     location: https://github.com/happstack/web-routes-th
 
 test-suite Test
+  Default-Language : Haskell2010
   type             : exitcode-stdio-1.0
   main-is          : Test.hs
   hs-source-dirs   : test
@@ -30,6 +31,7 @@ test-suite Test
                      web-routes-th
 
 Library
+        Default-Language: Haskell2010
         Build-Depends:    base >= 4 && < 5,
                           parsec >= 2 && < 4,
                           template-haskell < 2.17,
