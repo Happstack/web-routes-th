@@ -47,18 +47,13 @@ derivePathInfo' formatter name
     = do c <- parseInfo name
          case c of
            Tagged cons cx keys ->
-               do let context = [ mkCtx ''PathInfo [varT key] | key <- keys ] ++ map return cx
-                  i <- instanceD (sequence context) (mkType ''PathInfo [mkType name (map varT keys)])
+               do let context = pure $  [ AppT (ConT ''PathInfo) (VarT key) | key <- keys ] ++ cx
+                  i <- instanceD context (mkType ''PathInfo [mkType name (map varT keys)])
                        [ toPathSegmentsFn cons
                        , fromPathSegmentsFn cons
                        ]
                   return [i]
     where
-#if MIN_VERSION_template_haskell(2,4,0)
-      mkCtx = classP
-#else
-      mkCtx = mkType
-#endif
       toPathSegmentsFn :: [(Name, Int)] -> DecQ
       toPathSegmentsFn cons
           = do inp <- newName "inp"

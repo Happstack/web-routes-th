@@ -1,4 +1,4 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving, OverloadedStrings, TemplateHaskell #-}
+{-# LANGUAGE ExtendedDefaultRules, FlexibleInstances, GeneralizedNewtypeDeriving, OverloadedStrings, TemplateHaskell, DatatypeContexts #-}
 
 module Main (main) where
 
@@ -11,29 +11,30 @@ import Web.Routes.TH
 
 newtype ArticleId = ArticleId Int deriving (Eq, Show, Num, PathInfo, Arbitrary)
 
-data Sitemap
-    = Home
+-- the use of Show is and 'a' is to exercise the context generation of the 'derivePathInfo' code
+data (Show a) => Sitemap a
+    = Home a
     | Article ArticleId
     deriving (Eq, Show)
 
 derivePathInfo ''Sitemap
 
-instance Arbitrary Sitemap where
-    arbitrary = oneof [return Home, fmap Article arbitrary]
+instance Arbitrary (Sitemap Int) where
+    arbitrary = oneof [fmap Home arbitrary, fmap Article arbitrary]
 
-prop_PathInfo_isomorphism :: Sitemap -> Bool
+prop_PathInfo_isomorphism :: Sitemap Int -> Bool
 prop_PathInfo_isomorphism = pathInfoInverse_prop
 
 case_toPathInfo :: Assertion
 case_toPathInfo =
-    do toPathInfo Home @?= "/home"
-       toPathInfo (Article 0) @?= "/article/0"
+    do toPathInfo ((Home 1) :: Sitemap Int) @?= "/home/1"
+       toPathInfo ((Article 0):: Sitemap Int) @?= "/article/0"
 
 case_fromPathInfo :: Assertion
 case_fromPathInfo =
-    do fromPathInfo "/home" @?= Right Home
+    do fromPathInfo "/home/1"      @?= ((Right (Home (1 :: Int))) :: Either String (Sitemap Int))
        fromPathInfo "/article/0" @?= Right (Article 0)
-       case fromPathInfo "/" :: Either String Sitemap of
+       case fromPathInfo "/" :: Either String (Sitemap Int) of
          Left _ -> return ()
          url    -> assertFailure $ "expected a Left, but got: " ++ show url
 
