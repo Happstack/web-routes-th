@@ -12,6 +12,7 @@ import Data.Char                     (isUpper, toLower, toUpper)
 import Data.List                     (intercalate, foldl')
 import Data.List.Split               (split, dropInitBlank, keepDelimsL, whenElt)
 import Data.Text                     (pack, unpack)
+import Data.Typeable                 (typeOf)
 import Language.Haskell.TH
 import Language.Haskell.TH.Syntax    (nameBase)
 import Text.ParserCombinators.Parsec ((<|>),many1)
@@ -89,6 +90,7 @@ parseInfo name
          case info of
            TyConI (DataD cx _ keys _ cs _)    -> return $ Tagged (map conInfo cs) cx $ map conv keys
            TyConI (NewtypeD cx _ keys _ con _)-> return $ Tagged [conInfo con] cx $ map conv keys
+           _ -> error ("Unexpected " <> show (typeOf info) <> ": " <> show info)
     where conInfo (NormalC n args) = (n, length args)
           conInfo (RecC n args) = (n, length args)
           conInfo (InfixC _ n _) = (n, 2)
