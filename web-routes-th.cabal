@@ -1,5 +1,5 @@
 Name:             web-routes-th
-Version:          0.22.8
+Version:          0.22.8.1
 License:          BSD3
 License-File:     LICENSE
 Author:           jeremy@seereason.com
@@ -12,7 +12,7 @@ Description:      web-routes is a portable library for type-safe URLs. This modu
                   Template Haskell.
 Cabal-Version:    >= 1.10
 Build-type:       Simple
-tested-with:      GHC==8.0.2, GHC==8.2.2, GHC==8.4.1, GHC==8.6.5, GHC==8.8.4, GHC==8.10.7, GHC==9.0.2, GHC==9.2.2
+tested-with:      GHC==8.0.2, GHC==8.2.2, GHC==8.4.1, GHC==8.6.5, GHC==8.8.4, GHC==8.10.7, GHC==9.0.2, GHC==9.2.5, GHC==9.4.2
 
 source-repository head
     type:     git
@@ -24,7 +24,7 @@ test-suite Test
   main-is          : Test.hs
   hs-source-dirs   : test
   build-depends    : base  >= 4.9 && < 5,
-                     hspec >= 2.2 && < 2.10,
+                     hspec >= 2.2 && < 2.11,
                      HUnit,
                      QuickCheck,
                      web-routes >= 0.27 && < 0.28,
@@ -34,7 +34,7 @@ Library
         Default-Language: Haskell2010
         Build-Depends:    base       >= 4.9 && < 5,
                           parsec     >= 2 && < 4,
-                          template-haskell >= 2.11 && < 2.19,
+                          template-haskell >= 2.11 && < 2.20,
                           text       >= 0.11 && < 2.1,
                           split      >= 0.2  && < 0.3,
                           web-routes >= 0.26 && < 0.28
