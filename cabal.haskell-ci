@@ -1,0 +1,4 @@
+branches: master
+
+error-unused-packages: False
+error-incomplete-patterns: False
